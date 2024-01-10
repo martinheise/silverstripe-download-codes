@@ -1,0 +1,29 @@
+Mhe\DownloadCodes\Model\DLCode:
+  valid_default:
+    Code: "VALIDCODE"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+  valid_unlimited:
+    Code: "FREE"
+    Expires:
+    Active: 1
+    Limited: 0
+    UsageCount: 0
+Mhe\DownloadCodes\Model\DLRedemption:
+  valid:
+    URLSecret: "a123"
+    Code: =>Mhe\DownloadCodes\Model\DLCode.valid_unlimited
+    Expires: "2022-02-20T00:00:00"
+  expired_today:
+    URLSecret: "b123"
+    Code: =>Mhe\DownloadCodes\Model\DLCode.valid_unlimited
+    Expires: "2022-01-15T00:00:00"
+  expired:
+    URLSecret: "c123"
+    Code: =>Mhe\DownloadCodes\Model\DLCode.valid_unlimited
+    Expires: "2022-01-10T00:00:00"
+  incomplete:
+    URLSecret: "d123"
+    Expires: "2022-02-20T00:00:00"

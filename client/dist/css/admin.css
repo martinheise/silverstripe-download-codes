@@ -1,0 +1,15 @@
+.grid-field__table {
+    position:relative;
+}
+
+.grid-field__row-validation span:before {
+    margin-right: 0.5em;
+}
+
+.grid-field__row-validation .font-icon-check-mark-circle {
+    color: green
+}
+
+.grid-field__row-validation .font-icon-cancel-circled {
+    color: red
+}

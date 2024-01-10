@@ -1,0 +1,61 @@
+Mhe\DownloadCodes\Model\DLCode:
+  valid_default:
+    Code: "VALIDCODE"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+SilverStripe\Assets\Folder:
+  publicfolder:
+    Title: "Public Folder"
+    CanViewType: Anyone
+  protectedfolder:
+    Title: "Protected Folder"
+    CanViewType: OnlyTheseUsers
+SilverStripe\Assets\File:
+  download1:
+    FileFilename: download1.mp3
+    CanViewType: OnlyTheseUsers
+    FileHash: c129504a352cce6a6e80f3ca6c95ab85b14b9b62
+    Name: download1.mp3
+  download2:
+    FileFilename: download2.wav
+    CanViewType: OnlyTheseUsers
+    FileHash: 6e11ccf096e93f03dae7a3ce00d42a64cda3d739
+    Name: download2.wav
+SilverStripe\Assets\Image:
+  publicimage1:
+    FileFilename: publicfolder/publicimage1.jpg
+    Parent: =>SilverStripe\Assets\Folder.publicfolder
+    Name: publicimage1.jpg
+    CanViewType: Inherit
+  publicimage2:
+    FileFilename: publicfolder/publicimage2.jpg
+    Parent: =>SilverStripe\Assets\Folder.protectedfolder
+    Name: publicimage2.jpg
+    CanViewType: Anyone
+  protectedimage1:
+    FileFilename: publicfolder/protectedimage1.jpg
+    Parent: =>SilverStripe\Assets\Folder.protectedfolder
+    Name: protectedimage1.jpg
+    CanViewType: Inherit
+  protectedimage2:
+    FileFilename: publicfolder/protectedimage2.jpg
+    Parent: =>SilverStripe\Assets\Folder.publicfolder
+    Name: protectedimage2.jpg
+    CanViewType: OnlyTheseUsers
+  preview_image:
+    Title: "Preview image"
+    FileFilename: preview.jpg
+    FileHash: 347930464c806c3a70bbf87a3a741572de7c529f
+    Name: preview.jpg
+Mhe\DownloadCodes\Model\DLPackage:
+  package1:
+    Title: "Test Package"
+    EnableZip: true
+    PreviewImage: =>SilverStripe\Assets\Image.preview_image
+    Files:
+      - =>SilverStripe\Assets\File.download1
+      - =>SilverStripe\Assets\File.download2
+
+

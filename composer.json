@@ -1,0 +1,46 @@
+{
+    "name": "mhe/silverstripe-download-codes",
+    "description": "Create download codes for protected files in SilverStripe",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "CMS",
+        "downloads",
+        "file"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Martin Heise",
+            "email": "info@martinheise.de"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "silverstripe/framework": "^4.0 || ^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "suggest": {
+        "bummzack/sortablefile": "Support for sortable UploadFields, e.g. for Download Package files",
+        "colymba/gridfield-bulk-editing-tools": "Support for bulk actions in Admin",
+        "ext/zip": "Support for DownloadPackages as zip"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mhe\\DownloadCodes\\": "src/",
+            "Mhe\\DownloadCodes\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "expose": [
+            "client/dist"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,69 @@
+de:
+  Mhe\DownloadCodes\Controller\DLCodeAdmin:
+    FORM_Quantity: Anzahl
+    GENERATE_CODES: 'Codes erzeugen'
+    MENUTITLE: 'Download-Codes'
+  Mhe\DownloadCodes\Controller\MarkDistributedHandler:
+    ACTION_LABEL: 'Als verteilt markieren'
+  Mhe\DownloadCodes\Controller\UnmarkDistributedHandler:
+    ACTION_LABEL: 'Verteilt-Markierung entfernen'
+  Mhe\DownloadCodes\Forms\DLRequestForm:
+    ACTION_submitcode: Einlösen
+    FIELD_Code: Code
+  Mhe\DownloadCodes\Forms\GridField\RowValidation:
+    ColumnTitle: 'Prüfung'
+    DefaultMessage: 'Zu prüfen'
+  Mhe\DownloadCodes\Model\DLCode:
+    ADMIN_TABNAME: 'Download-Codes'
+    EDIT_ALL_HELP: 'Download-Codes verwalten'
+    EDIT_ALL_NAME: 'Download-Codes bearbeiten'
+    ERROR_Unique_Code: 'Code wird bereits verwendet'
+    PLURALNAME: 'Download-Codes'
+    PLURALS:
+      one: 'Ein Download-Code'
+      other: '{count} Download-Codes'
+    SINGULARNAME: 'Download-Code'
+    db_Active: Aktiv
+    db_Code: Code
+    db_Distributed: Verteilt
+    db_Expires: 'Ablaufdatum'
+    db_Limited: Limitiert
+    db_Note: Notiz
+    db_UsageCount: 'Anzahl Verwendungen'
+    has_many_Redemptions: Einlösungen
+    has_one_Package: Paket
+  Mhe\DownloadCodes\Model\DLPackage:
+    ADMIN_TABNAME: 'Download-Pakete'
+    DESCRIPTION: 'Bündel von downloadbaren Dateien'
+    EDIT_ALL_HELP: 'Download-Pakete verwalten'
+    EDIT_ALL_NAME: 'Download-Pakete bearbeiten'
+    FILES_COUNT: 'Anzahl Dateien'
+    FILES_FIRST_TITLE: 'Erster Datei-Titel'
+    PLURALNAME: 'Download-Pakete'
+    PLURALS:
+      one: 'Ein Download-Paket'
+      other: '{count} Download-Pakete'
+    SINGULARNAME: 'Download-Paket'
+    db_EnableZip: 'ZIP-Download ermöglichen'
+    db_Title: 'Titel'
+    has_one_PreviewImage: 'Vorschau-Bild'
+    many_many_Files: 'Dateien'
+    UnprotectedFiles: 'Ungeschützte Dateien'
+  Mhe\DownloadCodes\Model\DLPage:
+    DESCRIPTION: 'Seite mit einem Formular, mit dem Nutzer ihre Download-Codes einlösen können'
+    PLURALNAME: 'Download-Seiten'
+    PLURALS:
+      one: 'Eine Download-Seite'
+      other: '{count} Download-Seiten'
+    SINGULARNAME: 'Download-Seite'
+  Mhe\DownloadCodes\Model\DLRedemption:
+    PLURALNAME: 'Download-Einlösungen'
+    PLURALS:
+      one: 'Eine Download-Einlösung'
+      other: '{count} Download-Einlösungen'
+    SINGULARNAME: 'Download-Einlösungen'
+    db_Created: 'Erstellt'
+    db_Expires: 'Ablaufdatum'
+    db_URLSecret: 'URL Secret'
+    has_one_Code: 'Code'
+

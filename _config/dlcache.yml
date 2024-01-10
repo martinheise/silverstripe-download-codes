@@ -1,0 +1,9 @@
+---
+Name: dlcache
+---
+SilverStripe\Core\Injector\Injector:
+  Psr\SimpleCache\CacheInterface.DLPackage_Generated:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: "DLPackage_Generated"
+

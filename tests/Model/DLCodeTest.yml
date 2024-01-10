@@ -1,0 +1,56 @@
+Mhe\DownloadCodes\Model\DLCode:
+  valid_default:
+    Code: "VALIDCODE"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+  valid_used_once:
+    Code: "ONCE_USED"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 1
+  valid_unlimited:
+    Code: "FREE"
+    Expires:
+    Active: 1
+    Limited: 0
+    UsageCount: 0
+  valid_unlimited_used:
+    Code: "BIRD"
+    Expires:
+    Active: 1
+    Limited: 0
+    UsageCount: 50
+  deactivated:
+    Code: "DEACTIVATED"
+    Expires:
+    Active: 0
+    Limited: 1
+    UsageCount: 0
+  usedlimit:
+    Code: "USEDLIMIT"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 20
+  expired:
+    Code: "EXPIRED"
+    Expires: "2020-01-01T00:00"
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+  expire_future:
+    Code: "EXPIRE_FUTURE"
+    Expires: "2099-01-01T00:00"
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+Mhe\DownloadCodes\Model\DLRedemption:
+  used_once:
+    URLSecret: "a123"
+    Code: =>Mhe\DownloadCodes\Model\DLCode.valid_used_once
+  unlimited_used:
+    URLSecret: "a789"
+    Code: =>Mhe\DownloadCodes\Model\DLCode.valid_unlimited_used

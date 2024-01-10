@@ -1,0 +1,66 @@
+en:
+  Mhe\DownloadCodes\Controller\DLCodeAdmin:
+    FORM_Quantity: Quantity
+    GENERATE_CODES: 'Generate Codes'
+    MENUTITLE: 'Download Codes'
+  Mhe\DownloadCodes\Controller\MarkDistributedHandler:
+    ACTION_LABEL: 'Mark as distributed'
+  Mhe\DownloadCodes\Controller\UnmarkDistributedHandler:
+    ACTION_LABEL: 'Remove distributed mark'
+  Mhe\DownloadCodes\Forms\DLRequestForm:
+    ACTION_submitcode: Redeem
+    FIELD_Code: Code
+  Mhe\DownloadCodes\Forms\GridField\RowValidation:
+    ColumnTitle: 'Validation'
+    DefaultMessage: 'To validate'
+  Mhe\DownloadCodes\Model\DLCode:
+    EDIT_ALL_HELP: 'Manage download codes.'
+    EDIT_ALL_NAME: 'Edit download codes'
+    ERROR_Unique_Code: 'Code is already in use'
+    PLURALNAME: 'Download Codes'
+    PLURALS:
+      one: 'A Download Code'
+      other: '{count} Download Codes'
+    SINGULARNAME: 'Download Code'
+    db_Active: Active
+    db_Code: Code
+    db_Distributed: Distributed
+    db_Expires: 'Expiration Date'
+    db_Limited: Limited
+    db_Note: Note
+    db_UsageCount: 'Usage Count'
+    has_many_Redemptions: Redemptions
+    has_one_Package: Package
+  Mhe\DownloadCodes\Model\DLPackage:
+    DESCRIPTION: 'Set of downloadable files'
+    EDIT_ALL_HELP: 'Manage download packages.'
+    EDIT_ALL_NAME: 'Edit download packages'
+    FILES_COUNT: 'Number of files'
+    FILES_FIRST_TITLE: 'First file title'
+    PLURALNAME: 'Download Packages'
+    PLURALS:
+      one: 'A Download Package'
+      other: '{count} Download Packages'
+    SINGULARNAME: 'Download Package'
+    db_EnableZip: 'Provide ZIP download'
+    db_Title: 'Title'
+    has_one_PreviewImage: 'Preview Image'
+    many_many_Files: 'Files'
+    UnprotectedFiles: 'Unprotected files'
+  Mhe\DownloadCodes\Model\DLPage:
+    DESCRIPTION: 'Page with a form where users can redeem their download codes'
+    PLURALNAME: 'Download Pages'
+    PLURALS:
+      one: 'A Download Page'
+      other: '{count} Download Pages'
+    SINGULARNAME: 'Download Page'
+  Mhe\DownloadCodes\Model\DLRedemption:
+    PLURALNAME: 'Download Redemptions'
+    PLURALS:
+      one: 'A Download Redemption'
+      other: '{count} Download Redemptions'
+    SINGULARNAME: 'Download Redemption'
+    db_Created: 'Created'
+    db_Expires: 'Expiry date'
+    db_URLSecret: 'URL Secret'
+    has_one_Code: 'Code'

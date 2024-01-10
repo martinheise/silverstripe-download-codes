@@ -1,0 +1,85 @@
+SilverStripe\Assets\Folder:
+  folder:
+    Title: folder
+SilverStripe\Assets\File:
+  download1:
+    FileFilename: download1.mp3
+    CanViewType: OnlyTheseUsers
+    FileHash: c129504a352cce6a6e80f3ca6c95ab85b14b9b62
+    Name: download1.mp3
+    Title: Download 1
+  download2:
+    FileFilename: download2.wav
+    CanViewType: OnlyTheseUsers
+    FileHash: 6e11ccf096e93f03dae7a3ce00d42a64cda3d739
+    Name: download2.wav
+    Title: Download 2
+SilverStripe\Assets\Image:
+  preview_image:
+    Title: "Preview image"
+    FileFilename: preview.jpg
+    FileHash: 347930464c806c3a70bbf87a3a741572de7c529f
+    Name: preview.jpg
+Mhe\DownloadCodes\Model\DLPage:
+  download:
+    Title: Download
+    URLSegment: download
+Mhe\DownloadCodes\Model\DLPackage:
+  downloads:
+    Title: 'Two Files'
+    PreviewImage: =>SilverStripe\Assets\Image.preview_image
+    Files:
+      - =>SilverStripe\Assets\File.download1:
+        Label: "MP3-File"
+        Sort: 1
+      - =>SilverStripe\Assets\File.download2:
+        Label: "WAV-File"
+        Sort: 2
+Mhe\DownloadCodes\Model\DLCode:
+  valid_default:
+    Code: "VALIDCODE"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+    Package: =>Mhe\DownloadCodes\Model\DLPackage.downloads
+  valid_unlimited:
+    Code: "FREE"
+    Expires:
+    Active: 1
+    Limited: 0
+    UsageCount: 0
+    Package: =>Mhe\DownloadCodes\Model\DLPackage.downloads
+  deactivated:
+    Code: "DEACTIVATED"
+    Expires:
+    Active: 0
+    Limited: 1
+    UsageCount: 0
+    Package: =>Mhe\DownloadCodes\Model\DLPackage.downloads
+  usedlimit:
+    Code: "USEDLIMIT"
+    Expires:
+    Active: 1
+    Limited: 1
+    UsageCount: 20
+    Package: =>Mhe\DownloadCodes\Model\DLPackage.downloads
+  expired:
+    Code: "EXPIRED"
+    Expires: "2020-01-01T00:00"
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+    Package: =>Mhe\DownloadCodes\Model\DLPackage.downloads
+  expire_future:
+    Code: "EXPIRE_FUTURE"
+    Expires: "2099-01-01T00:00"
+    Active: 1
+    Limited: 1
+    UsageCount: 0
+    Package: =>Mhe\DownloadCodes\Model\DLPackage.downloads
+Mhe\DownloadCodes\Model\DLRedemption:
+  valid:
+    URLSecret: "a1234567890b"
+    Code: =>Mhe\DownloadCodes\Model\DLCode.valid_unlimited
+    Expires: "2099-01-01T00:00:00"
