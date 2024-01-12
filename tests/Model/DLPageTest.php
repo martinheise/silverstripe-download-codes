@@ -5,6 +5,7 @@ namespace Mhe\DownloadCodes\Tests\Model;
 use Mhe\DownloadCodes\Model\DLCode;
 use Mhe\DownloadCodes\Model\DLRedemption;
 use Page;
+use PHPUnit\Util\Test;
 use SilverStripe\Assets\Dev\TestAssetStore;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Folder;
@@ -40,6 +41,8 @@ class DLPageTest extends FunctionalTest
 
         // setup test file storage
         TestAssetStore::activate('DownloadFiles');
+        // test response code like in live mode
+        TestAssetStore::config()->set('denied_response_code', 404);
         /** @var File $file */
         $files = File::get()->exclude('ClassName', Folder::class);
         foreach ($files as $file) {
