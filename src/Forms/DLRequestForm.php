@@ -22,7 +22,7 @@ class DLRequestForm extends Form
         $actions = new FieldList(
             FormAction::create('submitcode', _t(__CLASS__ . '.ACTION_submitcode', 'Submit'))
         );
-        $validator = new RequiredFields('Code');;
+        $validator = new RequiredFields('Code');
         parent::__construct($controller, $name, $fields, $actions, $validator);
     }
 

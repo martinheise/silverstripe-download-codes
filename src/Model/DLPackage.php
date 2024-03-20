@@ -37,11 +37,10 @@ use ZipArchive;
  */
 class DLPackage extends DataObject implements PermissionProvider, Flushable
 {
-
     /**
      * Permission to edit DLCodes
      */
-    const EDIT_ALL = 'DLPackage_EDIT_ALL';
+    public const EDIT_ALL = 'DLPackage_EDIT_ALL';
 
     private static $table_name = 'DLPackage';
 
@@ -176,12 +175,16 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
     public function filesAreProtected()
     {
         $protected = true;
-        $checker = Injector::inst()->get(PermissionChecker::class.'.file');
+        $checker = Injector::inst()->get(PermissionChecker::class . '.file');
         /* @var \SilverStripe\Assets\File $file */
         foreach ($this->Files() as $file) {
-            if ($file->CanViewType == InheritedPermissions::ANYONE) return false;
+            if ($file->CanViewType == InheritedPermissions::ANYONE) {
+                return false;
+            }
             if ($file->CanViewType === InheritedPermissions::INHERIT && $file->ParentID) {
-                if ($checker->canView($file->ParentID, null)) return false;
+                if ($checker->canView($file->ParentID, null)) {
+                    return false;
+                }
             }
         }
         return $protected;
@@ -192,7 +195,8 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
         return $this->filesAreProtected();
     }
 
-    public function gridFieldValidationMessage() {
+    public function gridFieldValidationMessage()
+    {
         return _t(__CLASS__ . '.UnprotectedFiles', 'unprotected files');
     }
 
@@ -202,7 +206,8 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
      * @param array|null $filter optionally filter files to Zip, @see \SilverStripe\ORM\DataList::filter()
      * @return DBFile|null
      */
-    public function getZippedFiles($filter = null) {
+    public function getZippedFiles($filter = null)
+    {
         $files = is_array($filter) ? $this->Files()->filter($filter) : $this->Files();
         if (!$this->EnableZip || $files->count() < 1) {
             return null;
@@ -225,7 +230,7 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
                 $tempPath = TEMP_PATH;
                 $zip = new ZipArchive();
                 $tempFile = tempnam($tempPath, 'dl');
-                if ($zip->open($tempFile, ZipArchive::OVERWRITE|ZipArchive::CREATE)!== TRUE) {
+                if ($zip->open($tempFile, ZipArchive::OVERWRITE | ZipArchive::CREATE) !== true) {
                     user_error("Could not open temp file for ZIP creation", E_USER_WARNING);
                     return null;
                 }
@@ -278,7 +283,8 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
      * get cache key, build from Title and package files
      * @return string
      */
-    public function getCacheKey() {
+    public function getCacheKey()
+    {
         $key = hash_init('sha1');
         hash_update($key, $this->ID . $this->Title);
         /* @var \SilverStripe\Assets\File $file */

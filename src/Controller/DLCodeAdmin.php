@@ -17,7 +17,6 @@ use SilverStripe\View\Requirements;
 
 class DLCodeAdmin extends ModelAdmin
 {
-
     private static $url_segment = 'dlcodes';
 
     private static $managed_models = [
@@ -65,9 +64,7 @@ class DLCodeAdmin extends ModelAdmin
     {
         $config = parent::getGridFieldConfig();
         if ($this->modelTab == 'packages') {
-            $config->addComponent(
-                RowValidation::create(), GridFieldEditButton::class
-            );
+            $config->addComponent(RowValidation::create(), GridFieldEditButton::class);
         }
         if ($this->modelTab == 'codes') {
             if (singleton(DLCode::class)->canCreate()) {
@@ -82,11 +79,10 @@ class DLCodeAdmin extends ModelAdmin
                     $config->addComponent(BulkManager::create([], false)
                         ->addBulkAction(DeleteHandler::class)
                         ->addBulkAction(MarkDistributedHandler::class)
-                        ->addBulkAction(UnmarkDistributedHandler::class)
-                    );
+                        ->addBulkAction(UnmarkDistributedHandler::class));
                 }
-
-            }        }
+            }
+        }
         return $config;
     }
 

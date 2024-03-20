@@ -25,11 +25,10 @@ use SilverStripe\Security\PermissionProvider;
  */
 class DLCode extends DataObject implements PermissionProvider
 {
-
     /**
      * Permission to edit DLCodes
      */
-    const EDIT_ALL = 'DLCode_EDIT_ALL';
+    public const EDIT_ALL = 'DLCode_EDIT_ALL';
 
     private static $table_name = 'DLCode';
 
@@ -133,7 +132,9 @@ class DLCode extends DataObject implements PermissionProvider
         $fields->addFieldToTab('Root.Main', $usagecount);
         // simple readonly grid field for Redemptions
         $redemptions = $fields->fieldByName('Root.Redemptions.Redemptions');
-        if ($redemptions) $redemptions->setConfig(GridFieldConfig_Base::create());
+        if ($redemptions) {
+            $redemptions->setConfig(GridFieldConfig_Base::create());
+        }
 
         $this->extend('updateCMSFields', $fields);
         return $fields;
@@ -271,7 +272,9 @@ class DLCode extends DataObject implements PermissionProvider
      */
     public function redeem()
     {
-        if (!$this->isRedeeamable()) return null;
+        if (!$this->isRedeeamable()) {
+            return null;
+        }
         $this->increaseUsageCount();
         if ($this->Limited) {
             $redemption = $this->Redemptions()->first();

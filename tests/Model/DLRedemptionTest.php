@@ -10,7 +10,6 @@ use SilverStripe\ORM\FieldType\DBDatetime;
 
 class DLRedemptionTest extends SapphireTest
 {
-
     protected static $fixture_file = 'DLRedemptionTest.yml';
 
     public function setUp(): void
@@ -29,11 +28,11 @@ class DLRedemptionTest extends SapphireTest
     {
         $redemption = DLRedemption::create();
         $this->assertMatchesRegularExpression("![a-f0-9]{64}!", $redemption->URLSecret);
-        $this->assertEquals( strtotime('2022-01-22T08:15:00'), $redemption->Expires);
+        $this->assertEquals(strtotime('2022-01-22T08:15:00'), $redemption->Expires);
         // modified expiration
         Config::modify()->set(DLRedemption::class, 'validity_days', 14);
         $redemption = DLRedemption::create();
-        $this->assertEquals( strtotime('2022-01-29T08:15:00'), $redemption->Expires);
+        $this->assertEquals(strtotime('2022-01-29T08:15:00'), $redemption->Expires);
     }
 
     public function testValid()
