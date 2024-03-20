@@ -54,6 +54,4 @@ class UnmarkDistributedHandler extends Handler
         }
         return $response;
     }
-
-
 }

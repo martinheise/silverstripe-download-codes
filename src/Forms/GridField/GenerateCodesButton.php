@@ -2,7 +2,6 @@
 
 namespace Mhe\DownloadCodes\Forms\GridField;
 
-
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridField_FormAction;
 use SilverStripe\Forms\GridField\GridFieldImportButton;
@@ -16,7 +15,6 @@ use SilverStripe\View\SSViewer;
  */
 class GenerateCodesButton extends GridFieldImportButton
 {
-
     /**
      * @param GridField $gridField
      * @return array
@@ -64,8 +62,4 @@ class GenerateCodesButton extends GridFieldImportButton
             $this->targetFragment => $button->Field()
         ];
     }
-
-
-
-
 }

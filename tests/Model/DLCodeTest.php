@@ -10,7 +10,6 @@ use SilverStripe\ORM\FieldType\DBField;
 
 class DLCodeTest extends SapphireTest
 {
-
     protected static $fixture_file = 'DLCodeTest.yml';
 
     public function setUp(): void
@@ -76,13 +75,14 @@ class DLCodeTest extends SapphireTest
         $this->assertTrue($result->exists(), 'a new redemption is written');
         $this->assertEquals($code->ID, $result->Code()->ID, 'New DLRedemption object is related to the code');
         $this->assertNotEquals($redemption->URLSecret, $result->URLSecret, 'a new redemption is written instead of the existing one');
-        $this->assertGreaterThan($redemption->ID, $result->ID,'a new redemption is written instead of the existing one');
+        $this->assertGreaterThan($redemption->ID, $result->ID, 'a new redemption is written instead of the existing one');
     }
 
     /**
      * test validation (for creation of new DLCodes)
      */
-    public function testValidateUnique() {
+    public function testValidateUnique()
+    {
         $code = new DLCode([ 'Code' => 'abc']);
         $code->write();
         $code = new DLCode([ 'Code' => 'abc1234']);
@@ -97,7 +97,8 @@ class DLCodeTest extends SapphireTest
     /**
      * test getting a redemption for code as entered by a user
      */
-    public function testGetRedeemable() {
+    public function testGetRedeemable()
+    {
         Config::modify()->set(DLCode::class, 'case_sensitive', true);
         $code = DLCode::get_redeemable_code('VALIDCODE');
         $this->assertNotEmpty($code);
@@ -114,7 +115,8 @@ class DLCodeTest extends SapphireTest
         $this->assertTrue($code->isRedeeamable());
     }
 
-    public function testAutoGenerate() {
+    public function testAutoGenerate()
+    {
         Config::modify()->set(DLCode::class, 'autogenerate_chars', 'abcde');
         Config::modify()->set(DLCode::class, 'autogenerate_length', 6);
         for ($i = 0; $i < 5; $i++) {

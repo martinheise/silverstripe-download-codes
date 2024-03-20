@@ -67,7 +67,9 @@ class DLRedemption extends DataObject
      */
     public function getUrlParamString()
     {
-        if (!$this->isValid()) return '';
+        if (!$this->isValid()) {
+            return '';
+        }
         return "?" . http_build_query(['c' => $this->Code()->ID, 'r' => $this->ID, 's' => $this->URLSecret]);
     }
 
@@ -79,7 +81,9 @@ class DLRedemption extends DataObject
      */
     public static function get_by_query_params($vars, $onlyvalid = true)
     {
-        if (!isset($vars['r']) || !isset($vars['c']) || !isset($vars['s'])) return null;
+        if (!isset($vars['r']) || !isset($vars['c']) || !isset($vars['s'])) {
+            return null;
+        }
         $redemption = self::get()->filter([
             'ID' => $vars['r'],
             'Code.ID' => $vars['c'],
@@ -105,5 +109,4 @@ class DLRedemption extends DataObject
         }
         return Permission::checkMember($member, 'CMS_ACCESS_DLCodeAdmin');
     }
-
 }

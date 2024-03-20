@@ -26,7 +26,8 @@ class DLPackageTest extends SapphireTest
                 $sourcePath = __DIR__ . '/../downloads/' . $file->Name;
                 $file->setFromLocalFile($sourcePath, $file->Filename);
                 $file->publishSingle();
-            } catch (\InvalidArgumentException $e) { }
+            } catch (\InvalidArgumentException $e) {
+            }
         }
     }
 
@@ -39,7 +40,8 @@ class DLPackageTest extends SapphireTest
      * check if all files are protected
      * @return void
      */
-    public function testCheckFilesAccess() {
+    public function testCheckFilesAccess()
+    {
         $package = new DLPackage();
         $this->assertTrue($package->filesAreProtected());
         $package->Files()->add($this->objFromFixture(Image::class, 'protectedimage1'));
@@ -56,7 +58,8 @@ class DLPackageTest extends SapphireTest
         $this->assertFalse($package->filesAreProtected());
     }
 
-    public function testGetCacheKey() {
+    public function testGetCacheKey()
+    {
         $hashs = [];
         /* @var DLPackage $package */
         $package = $this->objFromFixture(DLPackage::class, 'package1');
@@ -78,7 +81,8 @@ class DLPackageTest extends SapphireTest
         $this->assertEquals(4, count(array_filter($hashs, fn($hash) => strlen($hash) == 40)));
     }
 
-    public function testGeneratedZip() {
+    public function testGeneratedZip()
+    {
         /* @var DLPackage $package */
         $package = $this->objFromFixture(DLPackage::class, 'package1');
         $this->assertEquals('Test Package', $package->Title);
@@ -88,7 +92,7 @@ class DLPackageTest extends SapphireTest
         $this->assertTrue($zip->exists());
         $this->assertEquals(40, strlen($zip->Hash));
         $this->assertEquals('application/zip', $zip->getMimeType());
-        $this->assertEquals('test-package.zip', $zip->Filename );
+        $this->assertEquals('test-package.zip', $zip->Filename);
 
         $package->EnableZip = false;
         $this->assertEmpty($package->getZippedFiles());

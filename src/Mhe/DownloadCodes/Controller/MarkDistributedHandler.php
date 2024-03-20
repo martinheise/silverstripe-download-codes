@@ -54,6 +54,4 @@ class MarkDistributedHandler extends Handler
         }
         return $response;
     }
-
-
 }

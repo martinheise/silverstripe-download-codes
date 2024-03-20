@@ -11,7 +11,6 @@ use SilverStripe\ORM\ValidationResult;
 
 class DLPageController extends PageController
 {
-
     private static $allowed_actions = [
         "RequestForm",
         "redeem"
@@ -75,5 +74,4 @@ class DLPageController extends PageController
         $url = Controller::join_links($this->owner->Link('redeem'), $redemption->getUrlParamString());
         return $this->redirect($url);
     }
-
 }

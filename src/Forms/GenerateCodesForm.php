@@ -46,5 +46,4 @@ class GenerateCodesForm extends Form
             Controller::join_links($link, $name)
         );
     }
-
 }

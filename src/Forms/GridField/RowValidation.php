@@ -8,7 +8,6 @@ use SilverStripe\View\HTML;
 
 class RowValidation extends AbstractGridFieldComponent implements GridField_ColumnProvider
 {
-
     public function augmentColumns($gridField, &$columns)
     {
         if (!in_array('Validation', $columns ?? [])) {

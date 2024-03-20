@@ -84,7 +84,8 @@ class DLPageTest extends FunctionalTest
         $this->assertPartialMatchBySelector('.message', 'Invalid code', 'Expired code is rejected');
     }
 
-    private function assertFormSuccess(HTTPResponse $response, $title) {
+    private function assertFormSuccess(HTTPResponse $response, $title)
+    {
         $this->assertStringStartsWith('download/redeem', $this->mainSession->lastUrl(), 'Valid code redirects to Redeem action');
         $this->assertEquals(200, $response->getStatusCode());
         // contains title of package
@@ -106,7 +107,8 @@ class DLPageTest extends FunctionalTest
         $this->assertFormSuccess($response, 'Two Files');
     }
 
-    public function testFormForValidCodeWithWhitespace() {
+    public function testFormForValidCodeWithWhitespace()
+    {
         DLCode::config()->set('strip_whitespace', false);
         $this->get('download');
         $response = $this->submitForm("DLRequestForm_RequestForm", "action_submitcode", array("Code" => "   FREE  "));
@@ -132,9 +134,11 @@ class DLPageTest extends FunctionalTest
         $this->assertEquals('/assets/DownloadFiles/preview.jpg', $img['src']);
 
         // page contains label + links for all package files
-        $this->assertExactHTMLMatchBySelector('ul.downloads a',
+        $this->assertExactHTMLMatchBySelector(
+            'ul.downloads a',
             ['<a href="/assets/c129504a35/download1.mp3">Download 1</a>',
-             '<a href="/assets/6e11ccf096/download2.wav">Download 2</a>']);
+             '<a href="/assets/6e11ccf096/download2.wav">Download 2</a>']
+        );
     }
 
     public function testRedeemPageInvalid()
@@ -165,5 +169,4 @@ class DLPageTest extends FunctionalTest
         $response = $this->get("/assets/c129504a35/download1.mp3");
         $this->assertEquals(200, $response->getStatusCode());
     }
-
 }
