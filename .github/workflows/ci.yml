@@ -8,4 +8,5 @@ on:
 jobs:
   ci:
     name: CI
-    uses: silverstripe/gha-ci/.github/workflows/ci.yml@1.7.4
+    uses: silverstripe/gha-ci/.github/workflows/ci.yml@1.8
+
