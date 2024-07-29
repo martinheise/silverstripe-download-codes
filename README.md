@@ -4,14 +4,14 @@ An extension for SilverStripe for generating download codes to give frontend use
 
 ## Requirements
 
-Requires Silverstripe 5.x, still works with Silverstripe 4 – see respective branches `4` and `5`
+Branch 4 is a possible out-dated version for Silverstripe 4.
 
 
 ## Installation and setup
 
 Install with composer:
 
-    composer require mhe/silverstripe-download-codes ^1.0
+    composer require mhe/silverstripe-download-codes 4.x-dev
 
 Perform `dev/build` task
 
