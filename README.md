@@ -4,7 +4,7 @@ An extension for SilverStripe for generating download codes to give frontend use
 
 ## Requirements
 
-Requires Silverstripe 5.x, still works with Silverstripe 4 – see respective branches `4` and `5`
+Requires Silverstripe 5.x – for a version compatible with Silverstripe 4 see respective branch `4`
 
 
 ## Installation and setup
