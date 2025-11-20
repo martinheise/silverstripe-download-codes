@@ -7,8 +7,8 @@ use SilverStripe\Control\RequestHandler;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormAction;
-use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\Validation\RequiredFieldsValidator;
 
 /**
  * Form to request the redemption of a download code by a user
@@ -16,13 +16,13 @@ use SilverStripe\Forms\TextField;
  */
 class DLRequestForm extends Form
 {
-    public function __construct(RequestHandler $controller = null, $name = self::DEFAULT_NAME)
+    public function __construct(?RequestHandler $controller = null, $name = self::DEFAULT_NAME)
     {
         $fields = $this->getFormFields();
         $actions = new FieldList(
             FormAction::create('submitcode', _t(__CLASS__ . '.ACTION_submitcode', 'Submit'))
         );
-        $validator = new RequiredFields('Code');
+        $validator = new RequiredFieldsValidator('Code');
         parent::__construct($controller, $name, $fields, $actions, $validator);
     }
 
@@ -31,7 +31,7 @@ class DLRequestForm extends Form
      *
      * @return FieldList
      */
-    protected function getFormFields()
+    protected function getFormFields(): FieldList
     {
         $fields = FieldList::create(
             TextField::create('Code', _t(__CLASS__ . '.FIELD_Code', 'Code'))

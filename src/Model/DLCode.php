@@ -2,6 +2,7 @@
 
 namespace Mhe\DownloadCodes\Model;
 
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridFieldConfig_Base;
 use SilverStripe\ORM\DataObject;
@@ -28,45 +29,45 @@ class DLCode extends DataObject implements PermissionProvider
     /**
      * Permission to edit DLCodes
      */
-    public const EDIT_ALL = 'DLCode_EDIT_ALL';
+    public const string EDIT_ALL = 'DLCode_EDIT_ALL';
 
-    private static $table_name = 'DLCode';
+    private static string $table_name = 'DLCode';
 
     /**
      * Number of possible download attempts for limited codes
      * This means the use of the particular code in DLRequestForm, not the actual file downloads
      * @config
      */
-    private static $usage_limit = 5;
+    private static int $usage_limit = 5;
 
     /**
      * Code input is case-sensitive
      * @config
      */
-    private static $case_sensitive = true;
+    private static bool $case_sensitive = true;
 
     /**
      * Code input is stripped of trailing/leading whitespace
      * caution: valid shouldn’t contain such whitespace then of course
      * @config
      */
-    private static $strip_whitespace = false;
+    private static bool $strip_whitespace = false;
 
     /**
      * Length of auto generated codes
      * @config
      * @var int
      */
-    private static $autogenerate_length = 8;
+    private static int $autogenerate_length = 8;
 
     /**
      * Characters used for auto generated codes
      * @config
      * @var string
      */
-    private static $autogenerate_chars = 'ABCDEFGHIJAKLMNOPQRSTUVWXYZ0123456789';
+    private static string $autogenerate_chars = 'ABCDEFGHIJAKLMNOPQRSTUVWXYZ0123456789';
 
-    private static $db = [
+    private static array $db = [
         'Code' => 'Varchar(255)',
         'Expires' => 'Datetime',
         'Active' => 'Boolean',
@@ -76,29 +77,29 @@ class DLCode extends DataObject implements PermissionProvider
         'Note' => 'Varchar(255)'
     ];
 
-    private static $defaults = [
+    private static array $defaults = [
         'Active' => true,
         'Limited' => true,
         'UsageCount' => 0,
         'Distributed' => false
     ];
 
-    private static $indexes = [
+    private static array $indexes = [
         'Code' => [
             'type' => 'unique',
             'columns' => ['Code'],
         ],
     ];
 
-    private static $has_one = [
+    private static array $has_one = [
         'Package' => DLPackage::class
     ];
 
-    private static $has_many = [
+    private static array $has_many = [
         'Redemptions' => DLRedemption::class,
     ];
 
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Code',
         'Package.Title',
         'Limited',
@@ -108,7 +109,7 @@ class DLCode extends DataObject implements PermissionProvider
     ];
 
 
-    private static $searchable_fields = [
+    private static array $searchable_fields = [
         'Package.Title',
         'Limited',
         'Active',
@@ -120,7 +121,7 @@ class DLCode extends DataObject implements PermissionProvider
      * get CMS fields – using default scaffolding and keeping possibility for extension
      * @return FieldList
      */
-    public function getCMSFields()
+    public function getCMSFields(): FieldList
     {
         $fields = $this->scaffoldFormFields([
             'includeRelations' => ($this->ID > 0),
@@ -142,10 +143,10 @@ class DLCode extends DataObject implements PermissionProvider
 
     /**
      * enhance field labels with custom values for summary/search fields
-     * @param $includerelations
+     * @param true $includerelations
      * @return array
      */
-    public function fieldLabels($includerelations = true)
+    public function fieldLabels($includerelations = true): array
     {
         $labels = parent::fieldLabels($includerelations);
         $labels['Package.Title'] = _t(
@@ -161,9 +162,8 @@ class DLCode extends DataObject implements PermissionProvider
      * @param array $args optional default properties
      * @param boolean $doWrite If true (default) immediately save the object
      * @return DLCode
-     * @throws \SilverStripe\ORM\ValidationException
      */
-    public static function autoGenerate($args = [], $doWrite = true)
+    public static function autoGenerate(array $args = [], bool $doWrite = true): static
     {
         $code = static::create($args);
         $tries = 0;
@@ -190,7 +190,7 @@ class DLCode extends DataObject implements PermissionProvider
      * @param int $length number of characters for the code
      * @return string
      */
-    protected static function randomCode()
+    protected static function randomCode(): string
     {
         $chars = static::config()->get('autogenerate_chars');
         $length = static::config()->get('autogenerate_length');
@@ -203,9 +203,9 @@ class DLCode extends DataObject implements PermissionProvider
 
     /**
      * custom validaton for unique Codes
-     * @return \SilverStripe\ORM\ValidationResult
+     * @return ValidationResult
      */
-    public function validate()
+    public function validate(): ValidationResult
     {
         $result = parent::validate();
         // assure unique codes – force case-insensitive search (default for MySQL anyway)
@@ -222,9 +222,9 @@ class DLCode extends DataObject implements PermissionProvider
     /**
      * Get one redeeamable DLCode for given code string
      * @param string $code Code
-     * @return DataObject|null
+     * @return ?DLCode
      */
-    public static function get_redeemable_code($code)
+    public static function get_redeemable_code(string $code): ?static
     {
         $modifier = static::config()->get('case_sensitive') ? ':case' : ':nocase';
         if (static::config()->get('strip_whitespace')) {
@@ -242,9 +242,9 @@ class DLCode extends DataObject implements PermissionProvider
 
     /**
      * Code is active and not expired
-     * @return boolean
+     * @return bool
      */
-    public function isRedeeamable()
+    public function isRedeeamable(): bool
     {
         return $this->Active &&
             ($this->UsageCount < static::config()->get('usage_limit') || !$this->Limited) &&
@@ -255,7 +255,7 @@ class DLCode extends DataObject implements PermissionProvider
      * increase UsageCount – if limit is reached, also set Active to false
      * @return DLCode
      */
-    public function increaseUsageCount()
+    public function increaseUsageCount(): static
     {
         $this->UsageCount++;
         if ($this->Limited && $this->UsageCount >= static::config()->get('usage_limit')) {
@@ -267,10 +267,9 @@ class DLCode extends DataObject implements PermissionProvider
     /**
      * Redeem this code – called after successful form submission
      * Creates/Gets a redemption object handling the secret URL
-     * @return DLRedemption|DataObject|null
-     * @throws \SilverStripe\ORM\ValidationException
+     * @return ?DLRedemption
      */
-    public function redeem()
+    public function redeem(): ?DLRedemption
     {
         if (!$this->isRedeeamable()) {
             return null;
@@ -290,9 +289,9 @@ class DLCode extends DataObject implements PermissionProvider
         return $redemption;
     }
 
-    public function providePermissions()
+    public function providePermissions(): array
     {
-        $perms = [
+        return [
             self::EDIT_ALL => [
                 'name' => _t(__CLASS__ . '.EDIT_ALL_NAME', 'Edit download codes'),
                 'category' => _t('SilverStripe\\Security\\Permission.CONTENT_CATEGORY', 'Content permissions'),
@@ -300,10 +299,9 @@ class DLCode extends DataObject implements PermissionProvider
                 'sort' => 201
             ]
         ];
-        return $perms;
     }
 
-    public function canView($member = null)
+    public function canView($member = null): bool
     {
         $extended = $this->extendedCan('canView', $member);
         if ($extended !== null) {
@@ -312,7 +310,7 @@ class DLCode extends DataObject implements PermissionProvider
         return Permission::checkMember($member, 'CMS_ACCESS_DLCodeAdmin');
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null): bool
     {
         $extended = $this->extendedCan('canEdit', $member);
         if ($extended !== null) {
@@ -321,12 +319,12 @@ class DLCode extends DataObject implements PermissionProvider
         return Permission::checkMember($member, self::EDIT_ALL);
     }
 
-    public function canDelete($member = null)
+    public function canDelete($member = null): bool
     {
         return $this->canEdit($member);
     }
 
-    public function canCreate($member = null, $context = [])
+    public function canCreate($member = null, $context = []): bool
     {
         return $this->canEdit($member);
     }

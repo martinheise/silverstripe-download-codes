@@ -10,17 +10,17 @@ use SilverStripe\Control\HTTPRequest;
 
 class UnmarkDistributedHandler extends Handler
 {
-    private static $url_segment = 'unmarkdistributed';
+    private static string $url_segment = 'unmarkdistributed';
 
-    private static $allowed_actions = array('unmark');
+    private static array $allowed_actions = array('unmark');
 
-    private static $url_handlers = array(
+    private static array $url_handlers = array(
         '' => 'unmark',
     );
 
     protected $label = 'Unmark as distributed';
 
-    public function getI18nLabel()
+    public function getI18nLabel(): string
     {
         return _t(self::class . '.ACTION_LABEL', $this->getLabel());
     }
@@ -30,7 +30,7 @@ class UnmarkDistributedHandler extends Handler
      * @param HTTPRequest $request
      * @return HTTPBulkToolsResponse
      */
-    public function unmark(HTTPRequest $request)
+    public function unmark(HTTPRequest $request): HTTPBulkToolsResponse
     {
         $response = new HTTPBulkToolsResponse(true, $this->gridField);
 

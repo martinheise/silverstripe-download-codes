@@ -7,16 +7,17 @@ use PageController;
 use SilverStripe\Assets\File;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
-use SilverStripe\ORM\ValidationResult;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Core\Validation\ValidationResult;
 
 class DLPageController extends PageController
 {
-    private static $allowed_actions = [
+    private static array $allowed_actions = [
         "RequestForm",
         "redeem"
     ];
 
-    protected function init()
+    protected function init(): void
     {
         parent::init();
     }
@@ -26,7 +27,7 @@ class DLPageController extends PageController
      * @param HTTPRequest $request
      * @return array
      */
-    public function redeem(HTTPRequest $request)
+    public function redeem(HTTPRequest $request): array
     {
         $redemption = DLRedemption::get_by_query_params($this->request->getVars());
         if ($redemption) {
@@ -44,7 +45,7 @@ class DLPageController extends PageController
      * form for code input
      * @return DLRequestForm
      */
-    public function RequestForm()
+    public function RequestForm(): DLRequestForm
     {
         return new DLRequestForm($this, 'RequestForm');
     }
@@ -53,9 +54,9 @@ class DLPageController extends PageController
      * handle post data of RequestForm
      * @param $data
      * @param DLRequestForm $form
-     * @return \SilverStripe\Control\HTTPResponse|null
+     * @return HTTPResponse
      */
-    public function submitcode($data, DLRequestForm $form)
+    public function submitcode($data, DLRequestForm $form): HTTPResponse
     {
         $data = $form->getData();
         // check if code is existing and valid
@@ -71,7 +72,7 @@ class DLPageController extends PageController
             return $this->redirectBack();
         }
         $redemption = $dlcode->redeem();
-        $url = Controller::join_links($this->owner->Link('redeem'), $redemption->getUrlParamString());
+        $url = Controller::join_links($this->Link('redeem'), $redemption->getUrlParamString());
         return $this->redirect($url);
     }
 }
