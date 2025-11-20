@@ -2,6 +2,7 @@
 
 namespace Mhe\DownloadCodes\Model;
 
+use Exception;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\Security\Permission;
@@ -17,24 +18,24 @@ use SilverStripe\Security\Permission;
  */
 class DLRedemption extends DataObject
 {
-    private static $table_name = 'DLRedemption';
+    private static string $table_name = 'DLRedemption';
 
     /**
      * Validity duration of redeemed codes
      * @config
      */
-    private static $validity_days = 7;
+    private static int $validity_days = 7;
 
-    private static $db = [
+    private static array $db = [
         'URLSecret' => 'Varchar(255)',
         'Expires' => 'Datetime'
     ];
 
-    private static $has_one = [
+    private static array $has_one = [
         'Code' => DLCode::class
     ];
 
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Created',
         'Expires'
     ];
@@ -42,9 +43,9 @@ class DLRedemption extends DataObject
     /**
      * on creation generate URLSecret and Expiration date
      * @return $this|DLRedemption
-     * @throws \Exception
+     * @throws Exception
      */
-    public function populateDefaults()
+    public function populateDefaults(): static
     {
         parent::populateDefaults();
         $this->URLSecret = bin2hex(random_bytes(32));
@@ -54,11 +55,11 @@ class DLRedemption extends DataObject
 
     /**
      * check validity by expiration date
-     * @return boolean
+     * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
-        return $this->Code->exists() && $this->obj('Expires')->inFuture();
+        return $this->Code()->exists() && $this->obj('Expires')->inFuture();
     }
 
     /**
@@ -77,13 +78,14 @@ class DLRedemption extends DataObject
      * Get a (valid) redemption object for given GET vars
      * @param array $vars get vars from request
      * @param boolean $onlyvalid check validity of object
-     * @return DataObject|null
+     * @return DLRedemption|null
      */
-    public static function get_by_query_params($vars, $onlyvalid = true)
+    public static function get_by_query_params($vars, $onlyvalid = true): ?static
     {
         if (!isset($vars['r']) || !isset($vars['c']) || !isset($vars['s'])) {
             return null;
         }
+        /* @var DLRedemption $redemption */
         $redemption = self::get()->filter([
             'ID' => $vars['r'],
             'Code.ID' => $vars['c'],

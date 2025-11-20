@@ -10,17 +10,17 @@ use SilverStripe\Control\HTTPRequest;
 
 class MarkDistributedHandler extends Handler
 {
-    private static $url_segment = 'markdistributed';
+    private static string $url_segment = 'markdistributed';
 
-    private static $allowed_actions = array('mark');
+    private static array $allowed_actions = array('mark');
 
-    private static $url_handlers = array(
+    private static array $url_handlers = array(
         '' => 'mark',
     );
 
     protected $label = 'Mark as distributed';
 
-    public function getI18nLabel()
+    public function getI18nLabel(): string
     {
         return _t(self::class . '.ACTION_LABEL', $this->getLabel());
     }
@@ -30,7 +30,7 @@ class MarkDistributedHandler extends Handler
      * @param HTTPRequest $request
      * @return HTTPBulkToolsResponse
      */
-    public function mark(HTTPRequest $request)
+    public function mark(HTTPRequest $request): HTTPBulkToolsResponse
     {
         $response = new HTTPBulkToolsResponse(true, $this->gridField);
 

@@ -3,6 +3,7 @@
 namespace Mhe\DownloadCodes\Model;
 
 use Bummzack\SortableFile\Forms\SortableUploadField;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\SimpleCache\CacheInterface;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\File;
@@ -33,60 +34,60 @@ use ZipArchive;
  * @property boolean $EnableZip Provide Zip download to user
  *
  * @method Image PreviewImage() Image for preview purposes
- * @method ManyManyList Files() Files available for download
+ * @method ManyManyList<File> Files() Files available for download
  */
 class DLPackage extends DataObject implements PermissionProvider, Flushable
 {
     /**
      * Permission to edit DLCodes
      */
-    public const EDIT_ALL = 'DLPackage_EDIT_ALL';
+    public const string EDIT_ALL = 'DLPackage_EDIT_ALL';
 
-    private static $table_name = 'DLPackage';
+    private static string $table_name = 'DLPackage';
 
-    private static $db = [
+    private static array $db = [
         'Title' => 'Varchar(255)',
         'EnableZip' => 'Boolean'
     ];
 
-    private static $has_one = [
+    private static array $has_one = [
         'PreviewImage' => Image::class,
     ];
 
-    private static $many_many = [
+    private static array $many_many = [
         'Files' => File::class,
     ];
 
-    private static $many_many_extraFields = [
+    private static array $many_many_extraFields = [
         'Files' => [
             'Sort' => 'Int'
         ]
     ];
 
-    private static $belongs_many_many = [
+    private static array $belongs_many_many = [
         'Code' => DLCode::class
     ];
 
-    private static $defaults = [
+    private static array $defaults = [
         'EnableZip' => true
     ];
 
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Title',
         'Files.Count',
         'Files.First.Title'
     ];
 
-    private static $searchable_fields = [
+    private static array $searchable_fields = [
         'Title'
     ];
 
     /**
-     * @var CacheInterface
+     * @var ?CacheInterface
      */
-    private $cache;
+    private ?CacheInterface $cache = null;
 
-    public function getCMSFields()
+    public function getCMSFields(): FieldList
     {
         if (class_exists('\\Bummzack\\SortableFile\\Forms\\SortableUploadField')) {
             $filesfields = SortableUploadField::create('Files', $this->fieldLabel('Files'))->setSortColumn('Sort');
@@ -116,7 +117,7 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
      * @param $includerelations
      * @return array
      */
-    public function fieldLabels($includerelations = true)
+    public function fieldLabels($includerelations = true): array
     {
         $labels = parent::fieldLabels($includerelations);
         $labels['Files.Count'] = _t(
@@ -131,9 +132,9 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
     }
 
 
-    public function providePermissions()
+    public function providePermissions(): array
     {
-        $perms = [
+        return [
             self::EDIT_ALL => [
                 'name' => _t(__CLASS__ . '.EDIT_ALL_NAME', 'Edit download packages'),
                 'category' => _t('SilverStripe\\Security\\Permission.CONTENT_CATEGORY', 'Content permissions'),
@@ -141,10 +142,9 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
                 'sort' => 211
             ]
         ];
-        return $perms;
     }
 
-    public function canView($member = null)
+    public function canView($member = null): bool
     {
         $extended = $this->extendedCan('canView', $member);
         if ($extended !== null) {
@@ -153,7 +153,7 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
         return Permission::checkMember($member, 'CMS_ACCESS_DLCodeAdmin');
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null): bool
     {
         $extended = $this->extendedCan('canEdit', $member);
         if ($extended !== null) {
@@ -162,21 +162,19 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
         return Permission::checkMember($member, self::EDIT_ALL);
     }
 
-    public function canDelete($member = null)
+    public function canDelete($member = null): bool
     {
         return $this->canEdit($member);
     }
 
-    public function canCreate($member = null, $context = [])
+    public function canCreate($member = null, $context = []): bool
     {
         return $this->canEdit($member);
     }
 
-    public function filesAreProtected()
+    public function filesAreProtected(): bool
     {
-        $protected = true;
         $checker = Injector::inst()->get(PermissionChecker::class . '.file');
-        /* @var \SilverStripe\Assets\File $file */
         foreach ($this->Files() as $file) {
             if ($file->CanViewType == InheritedPermissions::ANYONE) {
                 return false;
@@ -187,15 +185,15 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
                 }
             }
         }
-        return $protected;
+        return true;
     }
 
-    public function gridFieldValidation()
+    public function gridFieldValidation(): bool
     {
         return $this->filesAreProtected();
     }
 
-    public function gridFieldValidationMessage()
+    public function gridFieldValidationMessage(): string
     {
         return _t(__CLASS__ . '.UnprotectedFiles', 'unprotected files');
     }
@@ -206,7 +204,7 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
      * @param array|null $filter optionally filter files to Zip, @see \SilverStripe\ORM\DataList::filter()
      * @return DBFile|null
      */
-    public function getZippedFiles($filter = null)
+    public function getZippedFiles(?array $filter = null): ?DBFile
     {
         $files = is_array($filter) ? $this->Files()->filter($filter) : $this->Files();
         if (!$this->EnableZip || $files->count() < 1) {
@@ -216,7 +214,6 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
             /* @var AssetStore $store */
             $store = Injector::inst()->get(AssetStore::class);
 
-            $filevalue = null;
             $filter = URLSegmentFilter::create();
             $filename = $filter->filter($this->Title) . ".zip";
             $tempFile = null;
@@ -234,8 +231,6 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
                     user_error("Could not open temp file for ZIP creation", E_USER_WARNING);
                     return null;
                 }
-
-                /* @var \SilverStripe\Assets\File $file */
                 foreach ($files as $file) {
                     $zip->addFromString($file->Name, $file->getString());
                 }
@@ -271,7 +266,7 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
      * get cache instance for generated file results
      * @return CacheInterface
      */
-    public function getCache()
+    public function getCache(): CacheInterface
     {
         if (!$this->cache) {
             $this->cache = Injector::inst()->get(CacheInterface::class . '.DLPackage_Generated');
@@ -283,11 +278,11 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
      * get cache key, build from Title and package files
      * @return string
      */
-    public function getCacheKey()
+    public function getCacheKey(): string
     {
         $key = hash_init('sha1');
         hash_update($key, $this->ID . $this->Title);
-        /* @var \SilverStripe\Assets\File $file */
+        /* @var File $file */
         foreach ($this->Files() as $file) {
             hash_update($key, $file->Title);
             hash_update($key, $file->getHash());
@@ -298,9 +293,9 @@ class DLPackage extends DataObject implements PermissionProvider, Flushable
     /**
      * remove Zip file caches on flush
      * @return void
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public static function flush()
+    public static function flush(): void
     {
         $cache = Injector::inst()->get(CacheInterface::class . '.DLPackage_Generated');
         $cache->clear();

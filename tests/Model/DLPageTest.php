@@ -131,7 +131,8 @@ class DLPageTest extends FunctionalTest
 
         // page contains preview image
         $img = $this->cssParser()->getBySelector('img')[0];
-        $this->assertEquals('/assets/DownloadFiles/preview.jpg', $img['src']);
+        // RegEx to allow scaled versions
+        $this->assertMatchesRegularExpression('!/assets/DownloadFiles/preview\w*\.jpg!', $img['src']);
 
         // page contains label + links for all package files
         $this->assertExactHTMLMatchBySelector(

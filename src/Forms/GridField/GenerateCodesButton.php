@@ -5,7 +5,7 @@ namespace Mhe\DownloadCodes\Forms\GridField;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridField_FormAction;
 use SilverStripe\Forms\GridField\GridFieldImportButton;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\ArrayData;
 use SilverStripe\View\SSViewer;
 
 /**
@@ -19,7 +19,7 @@ class GenerateCodesButton extends GridFieldImportButton
      * @param GridField $gridField
      * @return array
      */
-    public function getHTMLFragments($gridField)
+    public function getHTMLFragments($gridField): array
     {
         $modalID = $gridField->ID() . '_GenerateModal';
 
@@ -50,7 +50,7 @@ class GenerateCodesButton extends GridFieldImportButton
             ->setForm($gridField->getForm())
             ->setAttribute('data-toggle', 'modal')
             ->setAttribute('aria-controls', $modalID)
-            ->setAttribute('data-target', "#{$modalID}")
+            ->setAttribute('data-target', "#$modalID")
             ->setAttribute('data-modal', $modal);
 
         // If form has a message, trigger it to automatically open
